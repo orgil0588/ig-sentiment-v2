@@ -1,10 +1,9 @@
 const Sentiment = require("../models/Sentiment");
-const asyncHandler = require("express-async-handler");
-const axios = require("axios");
+const Signal = require("../models/Signal");
 
-const signal = async () => {
+const signal = async (minutes) => {
   console.log(`${new Date().toUTCString()} : Signal`);
-  const data = await Sentiment.find().sort({ date: -1 }).limit(26);
+  const data = await Sentiment.find().sort({ date: -1 }).limit(28);
 
   const left = [];
   const right = [];
@@ -114,16 +113,33 @@ const signal = async () => {
     max
   ].toUpperCase()} : ${value[max]}`;
 
-  for (let i = 0; i <= 7; i++) {
-    await axios.get(
-      `https://api.telegram.org/bot5113353180:AAFudGRBpM6zyukiEQ4LUCn2Oo-u617PY3w/sendMessage?chat_id=-1001576475552&text=${keys[i]}: ${value[i]}`
+  let signalArr = {
+    signal: signal,
+    date: new Date(),
+  };
+  const signalFetch = await Signal.find().sort({ date: -1 }).limit(1);
+  const signalCheckerOld = signalFetch[0].signal.split(",");
+
+  const signalCheckerNew = signalArr.signal.split(",");
+  if (
+    signalCheckerOld[0].slice(0, 3).concat(signalCheckerOld[1].slice(0, 4)) ===
+    signalCheckerNew[0].slice(0, 3).concat(signalCheckerNew[1].slice(0, 4))
+  ) {
+    console.log("signal duplicated");
+    await Sentiment.deleteMany();
+    return;
+  } else {
+    console.log("signal alert!!!");
+    await Signal.create(signalArr);
+    await Sentiment.deleteMany();
+    for (let i = 0; i <= 7; i++) {
+      await axios.get(
+        `https://api.telegram.org/bot5113353180:AAFudGRBpM6zyukiEQ4LUCn2Oo-u617PY3w/sendMessage?chat_id=-1001576475552&text=${keys[i]}: ${value[i]}`
+      );
+    }
+    axios.get(
+      `https://api.telegram.org/bot5113353180:AAFudGRBpM6zyukiEQ4LUCn2Oo-u617PY3w/sendMessage?chat_id=-1001576475552&text=${signal}`
     );
   }
-  axios.get(
-    `https://api.telegram.org/bot5113353180:AAFudGRBpM6zyukiEQ4LUCn2Oo-u617PY3w/sendMessage?chat_id=-1001576475552&text=${signal}`
-  );
-  console.log("signal");
-
-
 };
 module.exports = signal;

@@ -10,20 +10,31 @@ const signal = require("./service/signal");
 // const { getLastSentimentData, getAllData } = require("../controller/datas.js");
 connectDB();
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 8001;
 
-crawler();
-setTimeout(() => {
-  signal();
-}, 300000);
+const filter = async () => {
+  const date = new Date().getDay();
+  if (date <= 5) {
+    const minutes = new Date().getMinutes();
+    await crawler(minutes);
+    await signal(minutes);
+  } else {
+    console.log("amraltiin odor");
+    return;
+  }
+};
 
-setInterval(() => {
-  crawler();
-}, 3600000);
+filter();
 
-setInterval(() => {
-  signal();
-}, 3900000);
+// setTimeout(async () => {
+//   await crawler();
+//   await signal();
+// }, 1000);
+
+// setInterval(async () => {
+//   await crawler();
+//   await signal();
+// }, 3600000);
 
 app.use(express.json());
 
