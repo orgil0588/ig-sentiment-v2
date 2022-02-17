@@ -105,12 +105,7 @@ const crawler = async (minutes) => {
     console.log(err);
   }
 
-
-    await SavedSentiment.create(fxArr);
-
- 
-    await Sentiment.create(fxArr);
-  
+  await Sentiment.create(fxArr);
 
   console.log(new Date().toUTCString(), "Crawler finish");
 };
