@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const SavedSentiment = new mongoose.Schema({
+const SavedSentimentSchema = new mongoose.Schema({
   pair: {
     type: String,
   },
@@ -15,4 +15,4 @@ const SavedSentiment = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("SavedSentiment", SavedSentiment);
+module.exports = mongoose.model("SavedSentiment", SavedSentimentSchema);
