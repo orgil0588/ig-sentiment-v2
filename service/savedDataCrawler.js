@@ -1,8 +1,8 @@
 const cheerio = require("cheerio");
 const axios = require("axios");
-const Sentiment = require("../models/Sentiment");
-const crawler = async (minutes) => {
-  console.log(new Date().toUTCString(), "Crawler start");
+const SavedSentiment = require("../models/SavedSentiment");
+const savedSentiment = async () => {
+  console.log(new Date().toUTCString(), "savedSentiment start");
   const fxArr = [];
 
   const fxPairs = [
@@ -105,14 +105,9 @@ const crawler = async (minutes) => {
     console.log(err);
   }
 
+  await SavedSentiment.create(fxArr);
 
-    await SavedSentiment.create(fxArr);
-
- 
-    await Sentiment.create(fxArr);
-  
-
-  console.log(new Date().toUTCString(), "Crawler finish");
+  console.log(new Date().toUTCString(), "savedSentiment finish");
 };
 
-module.exports = crawler;
+module.exports = savedSentiment;

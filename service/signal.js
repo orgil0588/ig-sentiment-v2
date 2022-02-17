@@ -1,6 +1,6 @@
 const Sentiment = require("../models/Sentiment");
 const Signal = require("../models/Signal");
-
+const axios = require("axios");
 const signal = async (minutes) => {
   console.log(`${new Date().toUTCString()} : Signal`);
   const data = await Sentiment.find().sort({ date: -1 }).limit(28);
@@ -125,9 +125,6 @@ const signal = async (minutes) => {
     signalCheckerOld[0].slice(0, 3).concat(signalCheckerOld[1].slice(0, 4)) ===
     signalCheckerNew[0].slice(0, 3).concat(signalCheckerNew[1].slice(0, 4))
   ) {
-    await axios.get(
-      `https://api.telegram.org/bot5113353180:AAFudGRBpM6zyukiEQ4LUCn2Oo-u617PY3w/sendMessage?chat_id=-1001576475552&text=signal not changed`
-    );
     console.log("signal duplicated");
     await Sentiment.deleteMany();
     return;

@@ -7,6 +7,7 @@ const app = express();
 
 const crawler = require("./service/crawler");
 const signal = require("./service/signal");
+const savedSentiment = require("./service/savedDataCrawler");
 // const { getLastSentimentData, getAllData } = require("../controller/datas.js");
 connectDB();
 
@@ -17,7 +18,8 @@ const filter = async () => {
 
   if (date <= 5) {
     const minutes = new Date().getMinutes();
-    console.log(minutes);
+    const seconds = new Date().getSeconds();
+    console.log(minutes, seconds);
     await crawler(minutes);
     await signal(minutes);
   } else {
@@ -27,24 +29,20 @@ const filter = async () => {
 };
 
 filter();
+setInterval(() => {
+  const minutes = new Date().getMinutes();
+  const seconds = new Date().getSeconds();
+  console.log(`interval ${minutes}:${seconds}`);
+  filter();
+}, 300000);
 
-// setTimeout(async () => {
-//   await crawler();
-//   await signal();
-// }, 1000);
-
-// setInterval(async () => {
-//   await crawler();
-//   await signal();
-// }, 3600000);
+setInterval(() => {
+  savedSentiment();
+}, 3600000);
 
 app.use(express.json());
 
 app.use(cors());
-
-// crawler()
-
-// app.use("/api/v1", dataRoutes);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
