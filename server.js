@@ -14,8 +14,10 @@ const port = process.env.PORT || 8001;
 
 const filter = async () => {
   const date = new Date().getDay();
+
   if (date <= 5) {
     const minutes = new Date().getMinutes();
+    console.log(minutes);
     await crawler(minutes);
     await signal(minutes);
   } else {
