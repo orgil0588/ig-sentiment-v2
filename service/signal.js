@@ -109,9 +109,9 @@ const signal = async (minutes) => {
   let keys = Object.keys(pairArr);
   let min = value.indexOf(Math.min(...value));
   let max = value.indexOf(Math.max(...value));
-  let signal = `${keys[min].toUpperCase()} : ${value[min]} , ${keys[
-    max
-  ].toUpperCase()} : ${value[max]}`;
+
+  console.log(`${keys[min]}: ${value[min]} => ${keys[max]} : ${value[max]}`);
+  let signal = `${keys[min]} : ${value[min]} , ${keys[max]} : ${value[max]}`;
 
   let signalArr = {
     signal: signal,
