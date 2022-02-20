@@ -117,10 +117,20 @@ const signal = async (minutes) => {
     signal: signal,
     date: new Date(),
   };
-  const signalFetch = await Signal.find().sort({ date: -1 }).limit(1);
+  const signalFetch = await Signal.find().sort({ date: 1 }).limit(1);
+
+  console.log(signalFetch + "prev db signal");
   const signalCheckerOld = signalFetch[0].signal.split(",");
 
   const signalCheckerNew = signalArr.signal.split(",");
+
+  console.log(
+    `${signalCheckerOld[0]
+      .slice(0, 3)
+      .concat(signalCheckerOld[1].slice(0, 4))} =====> ${signalCheckerNew[0]
+      .slice(0, 3)
+      .concat(signalCheckerNew[1].slice(0, 4))}`
+  );
   if (
     signalCheckerOld[0].slice(0, 3).concat(signalCheckerOld[1].slice(0, 4)) ===
     signalCheckerNew[0].slice(0, 3).concat(signalCheckerNew[1].slice(0, 4))
