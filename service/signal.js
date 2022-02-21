@@ -3,7 +3,8 @@ const Signal = require("../models/Signal");
 const axios = require("axios");
 const signal = async (minutes) => {
   console.log(`${new Date().toUTCString()} : Signal`);
-  const data = await Sentiment.find().sort({ date: -1 }).limit(28);
+  const data = await Sentiment.find();
+  const signalFetch = await Signal.find().sort({ _id: -1 }).limit(1);
 
   const left = [];
   const right = [];
@@ -110,36 +111,32 @@ const signal = async (minutes) => {
   let min = value.indexOf(Math.min(...value));
   let max = value.indexOf(Math.max(...value));
 
-  console.log(`${keys[min]}: ${value[min]} => ${keys[max]} : ${value[max]}`);
   let signal = `${keys[min]} : ${value[min]} , ${keys[max]} : ${value[max]}`;
 
   let signalArr = {
     signal: signal,
     date: new Date(),
   };
-  const signalFetch = await Signal.find().sort({ date: 1 }).limit(1);
 
-  console.log(signalFetch + "prev db signal");
   const signalCheckerOld = signalFetch[0].signal.split(",");
 
   const signalCheckerNew = signalArr.signal.split(",");
 
   console.log(
-    `${signalCheckerOld[0]
-      .slice(0, 3)
-      .concat(signalCheckerOld[1].slice(0, 4))} =====> ${signalCheckerNew[0]
-      .slice(0, 3)
-      .concat(signalCheckerNew[1].slice(0, 4))}`
+    signalCheckerOld[0].slice(0, 3).concat(signalCheckerOld[1].slice(0, 4)) +
+      "huuchin data"
+  );
+  console.log(
+    signalCheckerNew[0].slice(0, 3).concat(signalCheckerNew[1].slice(0, 4)) +
+      "shine data"
   );
   if (
     signalCheckerOld[0].slice(0, 3).concat(signalCheckerOld[1].slice(0, 4)) ===
     signalCheckerNew[0].slice(0, 3).concat(signalCheckerNew[1].slice(0, 4))
   ) {
-    console.log("signal duplicated");
     await Sentiment.deleteMany();
     return;
   } else {
-    console.log("signal alert!!!");
     await Signal.create(signalArr);
     await Sentiment.deleteMany();
     for (let i = 0; i <= 7; i++) {

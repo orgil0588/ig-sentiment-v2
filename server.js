@@ -17,6 +17,7 @@ const filter = async () => {
   const date = new Date().getDay();
 
   if (date <= 5) {
+    console.log(date, "date");
     const minutes = new Date().getMinutes();
     const seconds = new Date().getSeconds();
     console.log(minutes, seconds);
