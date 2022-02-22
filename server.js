@@ -2,13 +2,13 @@ const express = require("express");
 const bodyparser = require("body-parser");
 const cors = require("cors");
 const connectDB = require("./config/db");
-// const dataRoutes = require("./routes/datas");
 const app = express();
 
 const crawler = require("./service/crawler");
 const signal = require("./service/signal");
 const savedSentiment = require("./service/savedDataCrawler");
-// const { getLastSentimentData, getAllData } = require("../controller/datas.js");
+
+const getLastSentimentData  =require('./routes/datas')
 connectDB();
 
 const port = process.env.PORT || 8001;
@@ -44,6 +44,8 @@ setInterval(() => {
 app.use(express.json());
 
 app.use(cors());
+app.use("/api/v1/last-data", getLastSentimentData);
+
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

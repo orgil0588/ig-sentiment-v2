@@ -1,9 +1,9 @@
-// const express = require("express");
-// const router = express.Router();
+const express = require("express");
+const router = express.Router();
 
-// const { getLastSentimentData,  } = require("../service/crawler");
+const { getLastSentimentData  } = require("../controller/datas");
 
-// router.route("/get-last-sentiment-data").post(getLastSentimentData);
-// router.route("/get-all-data").post(getAllData);
+router.route("/").get(getLastSentimentData);
 
-// module.exports = router;
+
+module.exports = router;
