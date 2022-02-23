@@ -8,7 +8,8 @@ const crawler = require("./service/crawler");
 const signal = require("./service/signal");
 const savedSentiment = require("./service/savedDataCrawler");
 
-const getLastSentimentData  =require('./routes/datas')
+const getLastSentimentData = require("./routes/datas");
+const { getSavedRawData } = require("./service/savedSignalCalc");
 connectDB();
 
 const port = process.env.PORT || 8001;

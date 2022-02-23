@@ -1,6 +1,6 @@
 const savedSentiment = require("../models/SavedSentiment");
 const asyncHandler = require("express-async-handler");
-
+const Signal = require("../models/Signal");
 exports.getLastSentimentData = asyncHandler(async (req, res) => {
   const data = await savedSentiment.find().sort({ _id: -1 }).limit(28);
   const getLastSentimentRaw = await savedSentiment
@@ -8,7 +8,8 @@ exports.getLastSentimentData = asyncHandler(async (req, res) => {
     .sort({ _id: -1 })
     .limit(28)
     .select("pair long -_id");
-
+  
+  console.log();
   const left = [];
   const right = [];
   data.forEach((e) => {
@@ -118,5 +119,6 @@ exports.getLastSentimentData = asyncHandler(async (req, res) => {
     time: data[0].date,
     data: sortable,
     rawData: getLastSentimentRaw,
+  
   });
 });
