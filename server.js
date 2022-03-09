@@ -1,53 +1,25 @@
 const express = require("express");
-const bodyparser = require("body-parser");
-const cors = require("cors");
-const connectDB = require("./config/db");
+const { crawler } = require("./src/raw-data/rawData.service");
+const connectDB = require("./src/config/db");
+
+const historyRoutes = require("./src/signal/signal.route");
+// check week day
 const app = express();
 
-const crawler = require("./service/crawler");
-const signal = require("./service/signal");
-const savedSentiment = require("./service/savedDataCrawler");
-
-const getLastSentimentData = require("./routes/datas");
-const { getSavedRawData } = require("./service/savedSignalCalc");
 connectDB();
-
-const port = process.env.PORT || 8001;
-
 const filter = async () => {
   const date = new Date().getDay();
-
-  if (date <= 5) {
-    console.log(date, "date");
-    const minutes = new Date().getMinutes();
-    const seconds = new Date().getSeconds();
-    console.log(minutes, seconds);
-    await crawler(minutes);
-    await signal(minutes);
+  if (date < 6 && date !== 0) {
+    crawler();
+    setInterval(() => {
+      crawler();
+      console.log("running");
+    }, 300000);
   } else {
-    console.log("amraltiin odor");
-    return;
+    return 0;
   }
 };
-
 filter();
-setInterval(() => {
-  const minutes = new Date().getMinutes();
-  const seconds = new Date().getSeconds();
-  console.log(`interval ${minutes}:${seconds}`);
-  filter();
-}, 300000);
-
-setInterval(() => {
-  savedSentiment();
-}, 3600000);
-
 app.use(express.json());
-
-app.use(cors());
-app.use("/api/v1/last-data", getLastSentimentData);
-
-
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
+app.use("/api/v1/history", historyRoutes);
+const server = app.listen(8001);
