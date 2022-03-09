@@ -1,7 +1,7 @@
 const express = require("express");
 const { crawler } = require("./src/raw-data/rawData.service");
 const connectDB = require("./src/config/db");
-
+const cors = require("cors");
 const historyRoutes = require("./src/signal/signal.route");
 // check week day
 const app = express();
