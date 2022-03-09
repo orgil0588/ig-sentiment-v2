@@ -21,5 +21,7 @@ const filter = async () => {
 };
 filter();
 app.use(express.json());
+app.use(cors());
 app.use("/api/v1/history", historyRoutes);
+
 const server = app.listen(8001);
