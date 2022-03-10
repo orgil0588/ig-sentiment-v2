@@ -1,8 +1,10 @@
 const Calculated = require("./signal.model");
-
+const axios = require("axios");
 exports.signal = async (fxArr) => {
+  const len = await Calculated.countDocuments();
+  console.log(len);
   const result = fxArr;
-  console.log(result.length);
+
   let calc = [];
   const left = [];
   const right = [];
@@ -125,7 +127,6 @@ exports.signal = async (fxArr) => {
     .skip(1)
     .limit(1);
 
-    
   let value = Object.values(signalFetch[0].value);
   let keys = Object.keys(signalFetch[0].value);
   let min = value.indexOf(Math.min(...value));

@@ -4,7 +4,6 @@ const { fxPairs } = require("./fxPairs");
 const RawData = require("./rawData.model");
 const { signal } = require("../signal/signal.service");
 exports.crawler = async () => {
-
   const fxArr = [];
   const fxPairsNzd = ["nzd-cad"];
   let elIndex = 0;
@@ -36,7 +35,7 @@ exports.crawler = async () => {
       const fxObj = {
         pair: fxPairs[i],
         long: percentageResult,
-        date: new Date(),
+        date: new Date().toISOString(),
         index: elIndex,
       };
 
@@ -69,7 +68,7 @@ exports.crawler = async () => {
     const fxObj = {
       pair: fxPairsNzd[0],
       long: percentageResult,
-      date: new Date(),
+      date: new Date().toISOString(),
       index: 28,
     };
     fxArr.push(fxObj);

@@ -9,7 +9,7 @@ const app = express();
 connectDB();
 const filter = async () => {
   const date = new Date().getDay();
-  if (date < 6 && date !== 0) {
+  if (date !== 6 && date !== 0) {
     crawler();
     setInterval(() => {
       crawler();
