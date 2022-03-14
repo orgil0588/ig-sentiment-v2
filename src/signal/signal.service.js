@@ -141,16 +141,9 @@ exports.signal = async (fxArr) => {
 
   let prevSignal = `${prevkeys[prevmin]} : ${prevvalue[prevmin]} , ${prevkeys[prevmax]} : ${prevvalue[prevmax]}`;
 
-  if (
-    min !== undefined &&
-    max !== undefined &&
-    prevmin !== undefined &&
-    prevmax !== undefined
-  ) {
+  if (!Number.isNaN(min) || !Number.isNaN(max)) {
     const signalCheckerOld = signal.split(",");
-
     const signalCheckerNew = prevSignal.split(",");
-
     if (
       signalCheckerOld[0]
         .slice(0, 3)

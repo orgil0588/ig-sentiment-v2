@@ -7,19 +7,18 @@ const historyRoutes = require("./src/signal/signal.route");
 const app = express();
 
 connectDB();
-const filter = async () => {
-  const date = new Date().getDay();
-  if (date !== 6 && date !== 0) {
-    crawler();
-    setInterval(() => {
+setInterval(() => {
+  const filter = async () => {
+    const date = new Date().getDay();
+    if (date !== 6 && date !== 0) {
       crawler();
-      console.log("running");
-    }, 300000);
-  } else {
-    return 0;
-  }
-};
-filter();
+    } else {
+      return 0;
+    }
+  };
+  filter();
+}, 300000);
+
 app.use(express.json());
 app.use(cors());
 app.use("/api/v1/history", historyRoutes);
